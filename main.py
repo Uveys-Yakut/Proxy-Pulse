@@ -57,8 +57,12 @@ def main():
             parser.add_argument(f'--{kwargs["long"]}', **{k: v for k, v in kwargs.items() if k != 'long'})
         elif 'short' in kwargs:
             parser.add_argument(f'-{kwargs["short"]}', **{k: v for k, v in kwargs.items() if k != 'short'})
-    
+            
     args = parser.parse_args()
+
+    if args.mode not in ['interactive', 'command']:
+        print(f"{Fore.RED}● Error: Invalid mode specified. Valid options are 'interactive' or 'command'.{Style.RESET_ALL}\n")
+        sys.exit()
 
     help_text = parser.format_help()
 
@@ -121,7 +125,7 @@ def main():
             for proxy, error in failed_proxies.items():
                 print(f"{Fore.RED}  {proxy} - Error: {error}{Style.RESET_ALL}")
             print("")
-        
+
         if working_proxies:
             print(f"\n{Fore.GREEN}✅ Working Proxies ({len(working_proxies)}):{Style.RESET_ALL}\n")
             for proxy in working_proxies:
