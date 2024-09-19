@@ -72,67 +72,67 @@ def main():
     
     if args.mode == 'interactive':
         interactive(args)
-    
-    if args.help:
-        print(help_text)
-        return sys.exit()
-    
-    # Argüman doğrulama
-    if args.file and not validate_file_path(args.file):
-        return
-    
-    if args.output:
-        if '.' in args.output:
-            ext = args.output.rsplit('.', 1)[1].lower()
-            if ext != 'txt':
-                print(f"\n{RED}❌ Error: File name must have a '.txt' extension.{RESET}\n")
-                sys.exit()
-        else:
-            print(f"\n{MAGENTA}[!] File name does not have a '.txt' extension. Adding '.txt' automatically.{RESET}\n")
-            args.output += '.txt'
-    
-    if not validate_url(args.url):
-        return
-    
-    if not validate_positive_integer(args.timeout):
-        return
-    
-    if not validate_positive_integer(args.workers):
-        return
-
-    if args.file:
-        proxy_list = read_proxies_from_file(args.file, args.socks)
-    elif not args.proxies:
-        print(f"{Fore.RED}❌ Important-Message: No proxy list provided!{Style.RESET_ALL}\n")
-        return
-
-    if not proxy_list:
-        print(f"{Fore.RED}Error: Proxy list is empty or invalid!{Style.RESET_ALL}")
-        return
-    
-    print(f"\n{Fore.CYAN}Total proxies to test: {len(proxy_list)}{Style.RESET_ALL}\n")
-    
-    try:
-        working_proxies, failed_proxies = find_working_proxies(proxy_list, args.url, args.timeout, args.workers, args.socks)
-    except ValueError as e:
-        print(f"{Fore.RED}Error: {str(e)}{Style.RESET_ALL}")
-        return
-    
-    if working_proxies:
-        print(f"\n{Fore.GREEN}✅ Working Proxies ({len(working_proxies)}):{Style.RESET_ALL}\n")
-        for proxy in working_proxies:
-            print(f"{Fore.MAGENTA}  {proxy}{Style.RESET_ALL}")
+    else:
+        if args.help:
+            print(help_text)
+            return sys.exit()
+        
+        # Argüman doğrulama
+        if args.file and not validate_file_path(args.file):
+            return
         
         if args.output:
-            write_success_proxies_to_file(working_proxies, args.output)
-    else:
-        print(f"{Fore.RED}❌ No working proxies found. The output file will not be created.{Style.RESET_ALL}")
+            if '.' in args.output:
+                ext = args.output.rsplit('.', 1)[1].lower()
+                if ext != 'txt':
+                    print(f"\n{RED}❌ Error: File name must have a '.txt' extension.{RESET}\n")
+                    sys.exit()
+            else:
+                print(f"\n{MAGENTA}[!] File name does not have a '.txt' extension. Adding '.txt' automatically.{RESET}\n")
+                args.output += '.txt'
+        
+        if not validate_url(args.url):
+            return
+        
+        if not validate_positive_integer(args.timeout):
+            return
+        
+        if not validate_positive_integer(args.workers):
+            return
 
-    if failed_proxies:
-        print(f"\n{Fore.RED}❌ Failed Proxies:{Style.RESET_ALL}\n")
-        for proxy, error in failed_proxies.items():
-            print(f"{Fore.RED}  {proxy} - Error: {error}{Style.RESET_ALL}")
-        print("")
+        if args.file:
+            proxy_list = read_proxies_from_file(args.file, args.socks)
+        elif not args.proxies:
+            print(f"{Fore.RED}❌ Important-Message: No proxy list provided!{Style.RESET_ALL}\n")
+            return
+
+        if not proxy_list:
+            print(f"{Fore.RED}Error: Proxy list is empty or invalid!{Style.RESET_ALL}")
+            return
+        
+        print(f"\n{Fore.CYAN}Total proxies to test: {len(proxy_list)}{Style.RESET_ALL}\n")
+        
+        try:
+            working_proxies, failed_proxies = find_working_proxies(proxy_list, args.url, args.timeout, args.workers, args.socks)
+        except ValueError as e:
+            print(f"{Fore.RED}Error: {str(e)}{Style.RESET_ALL}")
+            return
+        
+        if working_proxies:
+            print(f"\n{Fore.GREEN}✅ Working Proxies ({len(working_proxies)}):{Style.RESET_ALL}\n")
+            for proxy in working_proxies:
+                print(f"{Fore.MAGENTA}  {proxy}{Style.RESET_ALL}")
+            
+            if args.output:
+                write_success_proxies_to_file(working_proxies, args.output)
+        else:
+            print(f"{Fore.RED}❌ No working proxies found. The output file will not be created.{Style.RESET_ALL}")
+
+        if failed_proxies:
+            print(f"\n{Fore.RED}❌ Failed Proxies:{Style.RESET_ALL}\n")
+            for proxy, error in failed_proxies.items():
+                print(f"{Fore.RED}  {proxy} - Error: {error}{Style.RESET_ALL}")
+            print("")
 
 if __name__ == "__main__":
     main()

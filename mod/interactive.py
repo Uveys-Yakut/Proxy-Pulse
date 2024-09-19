@@ -82,6 +82,12 @@ def interactive(args):
     
     working_proxies, failed_proxies = find_working_proxies(proxy_list, url, timeout, workers, socks)
     
+    if failed_proxies:
+        print(f"\n{RED}❌ Failed Proxies:{RESET}\n")
+        for proxy, error in failed_proxies.items():
+            print(f"{RED}  {proxy} - Error: {error}{RESET}")
+        print("")
+    
     if working_proxies:
         print(f"\n{GREEN}✅ Working Proxies ({len(working_proxies)}):{RESET}\n")
         for proxy in working_proxies:
@@ -93,9 +99,3 @@ def interactive(args):
     else:
         # Eğer başarılı proxy yoksa dosya oluşturma
         print(f"{RED}❌ No working proxies found. The output file will not be created.{RESET}\n")
-    
-    if failed_proxies:
-        print(f"\n{RED}❌ Failed Proxies:{RESET}\n")
-        for proxy, error in failed_proxies.items():
-            print(f"{RED}  {proxy} - Error: {error}{RESET}")
-        print("")
