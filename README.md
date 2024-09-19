@@ -68,22 +68,20 @@ To run your project on your local machine, follow these steps:
     
     #### 💡 Example
     - Testing proxies using command mode: 
-        
-        
-        ```bash
-        python proxy_pulse.py -m command -f proxies.txt -u http://example.com -t 10 -w 5 -o working_proxies.txt
 
     -
         ```bash
-        python proxy_pulse.py -m command -f proxies.txt -o output_proxy.txt
-
+        python proxy_pulse.py -m command -f proxies.txt
     -
         ```bash
         python proxy_pulse.py -m command -f proxies.txt -o output_proxy
 
     -
         ```bash
-        python proxy_pulse.py -m command -f proxies.txt
+        python proxy_pulse.py -m command -f proxies.txt -o output_proxy.txt
+        
+    -   ```bash
+        python proxy_pulse.py -m command -f proxies.txt -u http://example.com -t 10 -w 5 -o working_proxies.txt
 
 ## 📜 License
 
