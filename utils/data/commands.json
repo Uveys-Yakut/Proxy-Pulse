@@ -58,6 +58,7 @@
         },
         {
             "name": "output",
+            "short": "o",
             "long": "output",
             "default": "working_proxies.txt",
             "help": "path to the file where successful proxies will be saved"
