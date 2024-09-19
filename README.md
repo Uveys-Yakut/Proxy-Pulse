@@ -32,13 +32,11 @@ To run your project on your local machine, follow these steps:
         ```bash
         git clone https://github.com/Uveys-Yakut/Proxy-Pulse.git
 
-
     - **Navigate to the Project Directory**: Install the required Python   packages: 
        
        
        ```bash
        pip install -r requirements.txt
-
 
 ## 🧰 Usage
 - ### 💻 Command Mode
