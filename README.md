@@ -76,6 +76,6 @@ This project is licensed under the [MIT License](LICENSE)
 
 **Uveys** - Project Manager and Developer
 
-## 📧 Contact
+## 📬 Contact
 
 For questions and feedback, you can reach me via email: uveysyakut859188@protonmail.com
