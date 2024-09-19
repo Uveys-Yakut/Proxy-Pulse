@@ -1,4 +1,5 @@
 ## 🛡️ ProxyPulse [v1.0]
+[![Codename](https://img.shields.io/badge/Codename-ProxyPulse-red.svg?maxAge=259200)]() [![Stage](https://img.shields.io/badge/Release-Beta-brightgreen.svg)]() [![Build](https://img.shields.io/badge/Supported_OS-Windows%20%7C%20Linux-orange.svg)]() [![Available](https://img.shields.io/badge/Available-PyPI-red.svg?maxAge=259200)](https://pypi.org/project/proxy-pulse/) [![Documentation](https://img.shields.io/badge/Documentation-Available-blue.svg?maxAge=259200)](https://github.com/yourusername/proxy_pulse/wiki) [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-blue.svg?style=flat)]()
 
 ProxyPulse is a powerful proxy testing tool designed to validate and filter proxy lists efficiently. This tool supports interactive and command modes and provides detailed feedback on proxy performance, including location and connection status.
 
@@ -10,6 +11,10 @@ ProxyPulse is a powerful proxy testing tool designed to validate and filter prox
 - **Color-Coded Console Output**: Enhanced console output with color-coded success and error messages for better visibility.
 - **Configurable Parameters**: Customize proxy testing parameters through a configuration file or command-line arguments.
 
+## 📸 Screenshots
+![Application Screenshot](screenshot_1.png)
+![Application Screenshot](screenshot_2.png)
+![Application Screenshot](screenshot_3.png)
 
 ## ⚙️ Setup
 
@@ -67,6 +72,18 @@ To run your project on your local machine, follow these steps:
         
         ```bash
         python proxy_pulse.py -m command -f proxies.txt -u http://example.com -t 10 -w 5 -o working_proxies.txt
+
+    -
+        ```bash
+        python proxy_pulse.py -m command -f proxies.txt -o output_proxy.txt
+
+    -
+        ```bash
+        python proxy_pulse.py -m command -f proxies.txt -o output_proxy
+
+    -
+        ```bash
+        python proxy_pulse.py -m command -f proxies.txt
 
 ## 📜 License
 
