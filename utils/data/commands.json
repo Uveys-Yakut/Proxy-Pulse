@@ -1,0 +1,66 @@
+{
+    "arguments": [
+        {
+            "name": "help",
+            "short": "h",
+            "long": "help",
+            "action": "store_true",
+            "help": "show this help message and exit"
+        },
+        {
+            "name": "mode",
+            "short": "m",
+            "long": "mode",
+            "default": "command",
+            "help": "application mode ('interactive' or 'command')"
+        },
+        {
+            "name": "file",
+            "short": "f",
+            "long": "file",
+            "help": "path to the file containing the list of proxies"
+        },
+        {
+            "name": "proxies",
+            "short": "p",
+            "long": "proxies",
+            "help": "list of proxies to test (comma-separated if more than one)"
+        },
+        {
+            "name": "url",
+            "short": "u",
+            "long": "url",
+            "default": "http://httpbin.org/ip",
+            "help": "url to test against (Default: http://httpbin.org/ip)"
+        },
+        {
+            "name": "timeout",
+            "short": "t",
+            "long": "timeout",
+            "type": "int",
+            "default": 5,
+            "help": "timeout duration in seconds (Default: 5)"
+        },
+        {
+            "name": "workers",
+            "short": "w",
+            "long": "workers",
+            "type": "int",
+            "default": 10,
+            "help": "number of proxies to test simultaneously (Default: 10)"
+        },
+        {
+            "name": "socks",
+            "short": "s",
+            "long": "socks",
+            "action": "store_true",
+            "help": "enable this option to test SOCKS5 proxies"
+        },
+        {
+            "name": "output",
+            "long": "output",
+            "default": "working_proxies.txt",
+            "help": "path to the file where successful proxies will be saved"
+        }
+    ]
+}
