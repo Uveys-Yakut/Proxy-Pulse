@@ -51,7 +51,6 @@ def main():
         if 'help' in arg:
             kwargs['help'] = arg['help']
         
-        # Argümanları ekle
         if 'short' in kwargs and 'long' in kwargs:
             parser.add_argument(f'-{kwargs["short"]}', f'--{kwargs["long"]}', **{k: v for k, v in kwargs.items() if k not in ['short', 'long']})
         elif 'long' in kwargs:
@@ -77,7 +76,6 @@ def main():
             print(help_text)
             return sys.exit()
         
-        # Argüman doğrulama
         if args.file and not validate_file_path(args.file):
             return
         
@@ -118,6 +116,12 @@ def main():
             print(f"{Fore.RED}Error: {str(e)}{Style.RESET_ALL}")
             return
         
+        if failed_proxies:
+            print(f"\n{Fore.RED}❌ Failed Proxies:{Style.RESET_ALL}\n")
+            for proxy, error in failed_proxies.items():
+                print(f"{Fore.RED}  {proxy} - Error: {error}{Style.RESET_ALL}")
+            print("")
+        
         if working_proxies:
             print(f"\n{Fore.GREEN}✅ Working Proxies ({len(working_proxies)}):{Style.RESET_ALL}\n")
             for proxy in working_proxies:
@@ -127,12 +131,6 @@ def main():
                 write_success_proxies_to_file(working_proxies, args.output)
         else:
             print(f"{Fore.RED}❌ No working proxies found. The output file will not be created.{Style.RESET_ALL}")
-
-        if failed_proxies:
-            print(f"\n{Fore.RED}❌ Failed Proxies:{Style.RESET_ALL}\n")
-            for proxy, error in failed_proxies.items():
-                print(f"{Fore.RED}  {proxy} - Error: {error}{Style.RESET_ALL}")
-            print("")
 
 if __name__ == "__main__":
     main()

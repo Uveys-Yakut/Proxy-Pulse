@@ -3,7 +3,7 @@ import signal
 from utils.ansi_code import *
 from utils.proxy_utils import *
 from utils.ascii_art import header
-from utils.inpt_validators import *  # Burada validate_yes_no'yu da getiriyoruz.
+from utils.inpt_validators import *
 
 def handle_interrupt(signal, frame):
     print(f"\n\n{RED}Program interrupted by user. Exiting...{RESET}\n")
@@ -24,7 +24,7 @@ def get_user_input(prompt, default_value, validate_func=None):
         return default_value
 
 def interactive(args):
-    signal.signal(signal.SIGINT, handle_interrupt)  # Set up signal handler for Ctrl+C
+    signal.signal(signal.SIGINT, handle_interrupt)
 
     clear_terminal()
     header()
@@ -49,19 +49,19 @@ def interactive(args):
         str(args.timeout),
         validate_positive_integer
     )
-    timeout = int(timeout)  # Convert to integer after validation
+    timeout = int(timeout)
     
     workers = get_user_input(
         f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the number of workers (default: {args.workers}): {RESET}", 
         str(args.workers),
         validate_positive_integer
     )
-    workers = int(workers)  # Convert to integer after validation
+    workers = int(workers)
     
     socks = get_user_input(
         f"{YELLOW}[{RED}?{RESET}{YELLOW}] Test SOCKS5 proxies? (y/n, default: no): {RESET}", 
         "n",
-        validate_yes_no  # Burada doğrulama fonksiyonu olarak validate_yes_no kullanılıyor.
+        validate_yes_no
     ).lower() == 'y'
     
     output_file =  get_valid_output_file_name(
@@ -93,9 +93,7 @@ def interactive(args):
         for proxy in working_proxies:
             print(f"{MAGENTA}  {proxy}{RESET}")
         
-        # Başarılı proxy'ler varsa dosyaya yaz
         if output_file:
             write_success_proxies_to_file(working_proxies, output_file)
     else:
-        # Eğer başarılı proxy yoksa dosya oluşturma
         print(f"{RED}❌ No working proxies found. The output file will not be created.{RESET}\n")

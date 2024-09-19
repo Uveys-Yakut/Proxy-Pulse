@@ -60,7 +60,6 @@ def get_valid_output_file_name(prompt):
         filename = input(prompt).strip()
         
         if not filename:
-            # print(f"\n{RED}❌ Error: File name cannot be empty.{RESET}\n")
             filename = "working_proxies.txt"
         
         if '.' in filename and not filename.endswith('.txt'):
