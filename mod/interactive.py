@@ -1,5 +1,6 @@
 import sys
 import signal
+from colorama import Fore
 from utils.ansi_code import *
 from utils.proxy_utils import *
 from utils.ascii_art import header
@@ -33,47 +34,47 @@ def interactive(args):
     print(f"{CYAN}{'='*75}{RESET}\n")
 
     file_path = get_user_input(
-        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the path to the proxy list file (or leave blank to enter manually): {RESET}", 
+        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the path to the proxy list file (or leave blank to enter manually): {Fore.YELLOW}", 
         "", 
         validate_file_path
     )
     
     url = get_user_input(
-        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the URL to test (default: {args.url}): {RESET}", 
+        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the URL to test (default: {args.url}): {Fore.YELLOW}", 
         args.url,
         validate_url
     )
     
     timeout = get_user_input(
-        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the timeout duration in seconds (default: {args.timeout}): {RESET}", 
+        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the timeout duration in seconds (default: {args.timeout}): {Fore.YELLOW}", 
         str(args.timeout),
         validate_positive_integer
     )
     timeout = int(timeout)
     
     workers = get_user_input(
-        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the number of workers (default: {args.workers}): {RESET}", 
+        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the number of workers (default: {args.workers}): {Fore.YELLOW}", 
         str(args.workers),
         validate_positive_integer
     )
     workers = int(workers)
     
     socks = get_user_input(
-        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Test SOCKS5 proxies? (y/n, default: no): {RESET}", 
+        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Test SOCKS5 proxies? (y/n, default: no): {Fore.YELLOW}", 
         "n",
         validate_yes_no
     ).lower() == 'y'
     
     output_file =  get_valid_output_file_name(
-        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the output file name (default: working_proxies.txt): {RESET}"
+        f"{YELLOW}[{RED}?{RESET}{YELLOW}] Enter the output file name (default: working_proxies.txt): {Fore.YELLOW}"
     )
     proxy_list = []
     if file_path:
         proxy_list = read_proxies_from_file(file_path, socks)
     else:
-        print(f"{YELLOW}No file path provided. Please enter proxies manually.{RESET}")
+        print(f"{Fore.YELLOW}\n[!] No file path provided. Please enter proxies manually.")
         while True:
-            proxy = input(f"{YELLOW}Enter a proxy (or type 'done' to finish): {RESET}")
+            proxy = input(f"\n{YELLOW}Enter a proxy (or type 'done' to finish): {Fore.YELLOW}")
             if proxy.lower() == 'done':
                 break
             proxy_list.append(proxy)
