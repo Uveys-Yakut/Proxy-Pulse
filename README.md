@@ -61,14 +61,12 @@ To run your project on your local machine, follow these steps:
         ```bash
         python main.py -m interactive
     
-    
     #### 💡 Example
     - Testing proxies using command mode: 
         
         
         ```bash
         python proxy_pulse.py -m command -f proxies.txt -u http://example.com -t 10 -w 5 -o working_proxies.txt
-
 
 ## 📜 License
 
