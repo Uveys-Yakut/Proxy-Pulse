@@ -28,6 +28,7 @@ def main():
     print(f"{CYAN}    Welcome to ProxyPulse [v1.0] Proxy Testing Tool - Command Mode{RESET}")
     print(f"{CYAN}{'='*75}{RESET}\n")
 
+    proxy_list = []
     args_config = load_arguments_from_json("utils/data/commands.json")
     
     parser = argparse.ArgumentParser(
@@ -61,7 +62,7 @@ def main():
     args = parser.parse_args()
 
     if args.mode not in ['interactive', 'command']:
-        print(f"{Fore.RED}● Error: Invalid mode specified. Valid options are 'interactive' or 'command'.{Style.RESET_ALL}\n")
+        print(f"{RED}● Error: Invalid mode specified. Valid options are 'interactive' or 'command'.{RESET}\n")
         sys.exit()
 
     help_text = parser.format_help()
@@ -104,37 +105,36 @@ def main():
 
         if args.file:
             proxy_list = read_proxies_from_file(args.file, args.socks)
-        elif not args.proxies:
-            print(f"{Fore.RED}❌ Important-Message: No proxy list provided!{Style.RESET_ALL}\n")
-            return
 
-        if not proxy_list:
-            print(f"{Fore.RED}Error: Proxy list is empty or invalid!{Style.RESET_ALL}")
+        elif args.proxies:
+            proxy_list = parse_proxies_from_argument(args.proxies, args.socks)
+        else:
+            print(f"{RED}❌ Important-Message: No proxy list provided!{RESET}\n")
             return
         
-        print(f"\n{Fore.CYAN}Total proxies to test: {len(proxy_list)}{Style.RESET_ALL}\n")
+        print(f"\n{CYAN}Total proxies to test: {len(proxy_list)}{RESET}\n")
         
         try:
             working_proxies, failed_proxies = find_working_proxies(proxy_list, args.url, args.timeout, args.workers, args.socks)
         except ValueError as e:
-            print(f"{Fore.RED}Error: {str(e)}{Style.RESET_ALL}")
+            print(f"{RED}Error: {str(e)}{RESET}")
             return
         
         if failed_proxies:
-            print(f"\n{Fore.RED}❌ Failed Proxies:{Style.RESET_ALL}\n")
+            print(f"\n{RED}❌ Failed Proxies:{RESET}\n")
             for proxy, error in failed_proxies.items():
-                print(f"{Fore.RED}  {proxy} - Error: {error}{Style.RESET_ALL}")
+                print(f"{RED}  {proxy} - Error: {error}{RESET}")
             print("")
 
         if working_proxies:
-            print(f"\n{Fore.GREEN}✅ Working Proxies ({len(working_proxies)}):{Style.RESET_ALL}\n")
+            print(f"\n{GREEN}✅ Working Proxies ({len(working_proxies)}):{RESET}\n")
             for proxy in working_proxies:
-                print(f"{Fore.MAGENTA}  {proxy}{Style.RESET_ALL}")
+                print(f"{MAGENTA}  {proxy}{RESET}")
             
             if args.output:
                 write_success_proxies_to_file(working_proxies, args.output)
         else:
-            print(f"{Fore.RED}❌ No working proxies found. The output file will not be created.{Style.RESET_ALL}")
+            print(f"{RED}❌ No working proxies found. The output file will not be created.{RESET}")
 
 if __name__ == "__main__":
     main()

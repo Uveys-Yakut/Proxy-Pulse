@@ -1,4 +1,5 @@
 import os
+import re
 from .ansi_code import *
 from urllib.parse import urlparse
 
@@ -72,3 +73,44 @@ def get_valid_output_file_name(prompt):
         
         return filename
 
+def validate_and_format_proxies(proxy_list, socks=False):
+    """
+    Validates and formats proxy strings.
+    Supported formats:
+      - ip:port
+      - http://ip:port
+      - https://ip:port
+      - socks5://ip:port
+    """
+
+    valid_proxies = []
+
+    proxy_pattern = re.compile(
+        r'^(?:http://|https://|socks5://)?'
+        r'(\d{1,3}(?:\.\d{1,3}){3})'
+        r':(\d{2,5})$'
+    )
+
+    for proxy in proxy_list:
+        proxy = proxy.strip()
+        if not proxy:
+            continue
+
+        match = proxy_pattern.match(proxy)
+        if not match:
+            continue
+
+        ip, port = match.groups()
+
+        # Port range check
+        if not (1 <= int(port) <= 65535):
+            continue
+
+        if socks:
+            formatted_proxy = f"socks5://{ip}:{port}"
+        else:
+            formatted_proxy = f"http://{ip}:{port}"
+
+        valid_proxies.append(formatted_proxy)
+
+    return valid_proxies

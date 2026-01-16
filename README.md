@@ -54,6 +54,7 @@ To run your project on your local machine, follow these steps:
     #### Options
     - `-h, --help`: Show this help message and exit.
     - `-m, --mode`: Specify the mode of operation (interactive or command). Only these values are allowed.
+    - `-p, --proxies`: List of proxies to test (comma-separated if more than one)
     - `-f, --file`: File containing a list of proxies to test.
     - `-u, --url`: The URL to test the proxy against.
     - `-t, --timeout`: Request timeout for each proxy (in seconds).
@@ -82,6 +83,9 @@ To run your project on your local machine, follow these steps:
         
     -   ```bash
         python proxy_pulse.py -m command -f proxies.txt -u http://example.com -t 10 -w 5 -o working_proxies.txt
+
+    -   ```bash
+        python proxy_pulse.py -m command -p 176.236.46.147:80,78.188.215.12:1953 -u http://example.com -t 10 -w 5 -o working_proxies.txt    
 
 ## 📜 License
 

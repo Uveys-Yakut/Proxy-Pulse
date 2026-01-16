@@ -3,6 +3,7 @@ import json
 import requests
 from colorama import init, Fore
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from utils.inpt_validators import validate_and_format_proxies
 from .ansi_code import *
 
 def clear_terminal():
@@ -37,9 +38,9 @@ def test_proxy(proxy, test_url, timeout, is_socks):
             ip_info = ip_info_response.json()
             
             location_info = (
-                f"{Fore.YELLOW}City: {CYAN}{ip_info.get('city', 'N/A')} {BLUE}|{RESET} "
-                f"{Fore.YELLOW}Region: {CYAN}{ip_info.get('regionName', 'N/A')} {BLUE}|{RESET} "
-                f"{Fore.YELLOW}Country: {CYAN}{ip_info.get('country', 'N/A')}{RESET}"
+                f"{YELLOW}City: {CYAN}{ip_info.get('city', 'N/A')} {BLUE}|{RESET} "
+                f"{YELLOW}Region: {CYAN}{ip_info.get('regionName', 'N/A')} {BLUE}|{RESET} "
+                f"{YELLOW}Country: {CYAN}{ip_info.get('country', 'N/A')}{RESET}"
             )
             
             return (proxy, True, proxy_type, location_info)
@@ -56,22 +57,30 @@ def read_proxies_from_file(filepath, is_socks):
     if not os.path.exists(filepath):
         print(f"{RED}❌ File not found{RESET}")
         return []
-    
-    with open(filepath, 'r') as file:
-        proxies = file.read().splitlines()
-    
-    proxies = [proxy.strip() for proxy in proxies if proxy.strip()]
-    
-    if is_socks:
-        if not all(proxy.startswith('socks5://') for proxy in proxies):
-            print(f"{RED}❌ SOCKS5 proxies required{RESET}")
-            return []
-    else:
-        if any(proxy.startswith('socks5://') for proxy in proxies):
-            print(f"{RED}❌ HTTP/HTTPS only{RESET}")
-            return []
-    
-    return proxies
+
+    with open(filepath, 'r', encoding='utf-8') as file:
+        raw_proxies = [line.strip() for line in file if line.strip()]
+
+    if not raw_proxies:
+        print(f"{RED}❌ Proxy file is empty{RESET}")
+        return []
+
+    valid_proxies = validate_and_format_proxies(raw_proxies, is_socks)
+
+    if not valid_proxies:
+        if is_socks:
+            print(f"{RED}❌ No valid SOCKS5 proxies found in file{RESET}")
+        else:
+            print(f"{RED}❌ No valid HTTP/HTTPS proxies found in file{RESET}")
+        return []
+
+    skipped = len(raw_proxies) - len(valid_proxies)
+    if skipped > 0:
+        print(
+            f"{YELLOW}⚠️ Skipped {skipped} invalid or incompatible proxies{RESET}"
+        )
+
+    return valid_proxies
 
 def find_working_proxies(proxy_list, url, timeout, workers, socks):
     working_proxies = []
@@ -93,7 +102,7 @@ def find_working_proxies(proxy_list, url, timeout, workers, socks):
                     working_proxies.append(result[0])
                 else:
                     failure_message = (
-                        f"{Fore.RED}● Failed ({result[2]}): {RESET} "
+                        f"{RED}● Failed ({result[2]}): {RESET} "
                         f"{RED}{result[0]}{RESET}{RESET}"
                     )
                     print(failure_message)
@@ -102,3 +111,7 @@ def find_working_proxies(proxy_list, url, timeout, workers, socks):
                 failed_proxies[proxy] = "Error"
     
     return working_proxies, failed_proxies
+
+def parse_proxies_from_argument(proxies_arg, socks=False):
+    proxies = [p.strip() for p in proxies_arg.split(',') if p.strip()]
+    return validate_and_format_proxies(proxies, socks)
